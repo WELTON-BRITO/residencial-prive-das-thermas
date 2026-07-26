@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  OPERATOR
+}
+
+enum HolidayType {
+  NATIONAL
+  STATE
+  MUNICIPAL
+}
+
+enum BookingStatus {
+  CONFIRMED
+  PENDING
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String   @db.VarChar(150)
+  email        String   @unique @db.VarChar(150)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  logs         Log[]
+
+  @@map("users")
+}
+
+model Customer {
+  id        String    @id @default(uuid())
+  name      String    @db.VarChar(150)
+  taxId     String?   @unique @map("tax_id") @db.VarChar(20)
+  phone     String?   @db.VarChar(20)
+  email     String?   @db.VarChar(150)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  bookings  Booking[]
+
+  @@map("customers")
+}
+
+model Apartment {
+  id               String    @id @default(uuid())
+  number           String    @db.VarChar(20)
+  block            String?   @db.VarChar(20)
+  description      String?   @db.Text
+  defaultDailyRate Decimal   @default(0.00) @map("default_daily_rate") @db.Decimal(10, 2)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  bookings         Booking[]
+
+  @@map("apartments")
+}
+
+model Category {
+  id          String       @id @default(uuid())
+  name        String       @db.VarChar(100)
+  description String?      @db.Text
+  type        CategoryType
+  incomes     Income[]
+  expenses    Expense[]
+
+  @@map("categories")
+}
+
+model Booking {
+  id           String        @id @default(uuid())
+  bookingDate  DateTime      @default(now()) @map("booking_date")
+  customerId   String        @map("customer_id")
+  apartmentId  String        @map("apartment_id")
+  checkIn      DateTime      @map("check_in") @db.Date
+  checkOut     DateTime      @map("check_out") @db.Date
+  totalNights  Int           @map("total_nights")
+  dailyRate    Decimal       @map("daily_rate") @db.Decimal(10, 2)
+  rentalAmount Decimal       @map("rental_amount") @db.Decimal(10, 2)
+  paidAmount   Decimal       @default(0.00) @map("paid_amount") @db.Decimal(10, 2)
+  dueAmount    Decimal       @default(0.00) @map("due_amount") @db.Decimal(10, 2)
+  status       BookingStatus @default(CONFIRMED)
+  notes        String?       @db.Text
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  customer  Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  apartment Apartment @relation(fields: [apartmentId], references: [id], onDelete: Restrict)
+  payments  Payment[]
+  incomes   Income[]
+
+  @@index([customerId])
+  @@index([apartmentId])
+  @@index([checkIn, checkOut])
+  @@map("bookings")
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  bookingId     String        @map("booking_id")
+  installment   Int           @map("installment")
+  amount        Decimal       @db.Decimal(10, 2)
+  dueDate       DateTime?     @map("due_date") @db.Date
+  paymentDate   DateTime?     @map("payment_date") @db.Date
+  status        PaymentStatus @default(PENDING)
+  paymentMethod String?       @map("payment_method") @db.VarChar(50)
+  notes         String?       @db.Text
+  createdAt     DateTime      @default(now()) @map("created_at")
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+  @@map("payments")
+}
+
+model Income {
+  id          String   @id @default(uuid())
+  bookingId   String?  @map("booking_id")
+  categoryId  String?  @map("category_id")
+  description String   @db.VarChar(255)
+  amount      Decimal  @db.Decimal(10, 2)
+  receivedAt  DateTime @map("received_at") @db.Date
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  booking  Booking?  @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([receivedAt])
+  @@map("incomes")
+}
+
+model Expense {
+  id          String    @id @default(uuid())
+  categoryId  String?   @map("category_id")
+  description String    @db.VarChar(255)
+  amount      Decimal   @db.Decimal(10, 2)
+  dueDate     DateTime  @map("due_date") @db.Date
+  paymentDate DateTime? @map("payment_date") @db.Date
+  receiptUrl  String?   @map("receipt_url") @db.VarChar(255)
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([dueDate])
+  @@map("expenses")
+}
+
+model Holiday {
+  id          String      @id @default(uuid())
+  date        DateTime    @db.Date
+  description String      @db.VarChar(150)
+  type        HolidayType @default(NATIONAL)
+
+  @@map("holidays")
+}
+
+model Log {
+  id        String   @id @default(uuid())
+  userId    String?  @map("user_id")
+  action    String   @db.VarChar(100)
+  details   String?  @db.Text
+  ip        String?  @db.VarChar(45)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("logs")
+}
