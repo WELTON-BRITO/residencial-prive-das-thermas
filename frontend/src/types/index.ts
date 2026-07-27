@@ -19,15 +19,22 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface AuthContextData {
+  user: UserSession | null;
+  isAuthenticated: boolean;
+  login: (data: LoginRequest) => Promise<void>;
+  logout: () => void;
+}
+
 export interface User {
-    id: string;
-    name: string;
-    email: string;
+  id: string;
+  name: string;
+  email: string;
 }
 
 export interface LoginResponse {
-    id: string;
-    name: string;
-    email: string;
-    token: string;
+  id: string;
+  name: string;
+  email: string;
+  token: string;
 }
