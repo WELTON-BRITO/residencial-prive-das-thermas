@@ -1,5 +1,5 @@
 import { AppBar, Avatar, Box, Collapse, CssBaseline, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useTheme, } from "@mui/material";
-import { AttachMoney, Brightness4, Brightness7, Dashboard, ExpandLess, ExpandMore, FolderOpen, Logout, Menu, Person,} from "@mui/icons-material";
+import { AttachMoney, Brightness4, Brightness7, Dashboard, Event, ExpandLess, ExpandMore, FolderOpen, Logout, Menu, Person,} from "@mui/icons-material";
 import { useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import type { UserSession } from "../../types";
@@ -27,7 +27,10 @@ export function Layout({
   const theme = useTheme();
 
   const menuItems = useMemo(
-    () => [{ label: "Dashboard", icon: <Dashboard />, path: "/dashboard" }],
+    () => [
+      { label: "Dashboard", icon: <Dashboard />, path: "/dashboard" },     
+      { label: "Agendamento", icon: <Event />, path: "/agendamento"},    
+    ],
     [],
   );
 
