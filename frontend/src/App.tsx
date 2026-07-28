@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
-import { AppRoutes } from './routes';
+import { AppRouter } from './routes/AppRouter';
 
 function App() {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
@@ -28,10 +28,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <AppRoutes mode={mode} onToggleMode={() => setMode((prev) => (prev === 'light' ? 'dark' : 'light'))} />
+        <AppRouter mode={mode} onToggleMode={() => setMode((prev) => (prev === 'light' ? 'dark' : 'light'))} />
       </AuthProvider>
     </ThemeProvider>
   );
 }
 
-export default App
+export default App;

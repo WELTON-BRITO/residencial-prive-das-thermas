@@ -1,24 +1,10 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Stack,
-  TextField,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
+import { Alert, Box, Button, Card, CardContent, CardHeader, Stack, TextField, IconButton, InputAdornment } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import type { AuthResponse } from "../../types";
-import axios from "../../api/axios";
+import { useAuth } from '../../hooks/useAuth';
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export function LoginPage() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,22 +15,17 @@ export function LoginPage() {
     setShowPassword((prev) => !prev);
   };
 
+  const { login } = useAuth();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const { data } = await axios.post<AuthResponse>("/auth/login", {
-        email,
-        password,
-      });
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/dashboard");
+      await login({ email, password });
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Erro ao autenticar.";
+      const message = err instanceof Error ? err.message : 'Usuário ou senha inválidos.';
       setError(message);
     } finally {
       setLoading(false);
@@ -64,10 +45,7 @@ export function LoginPage() {
       }}
     >
       <Card sx={{ width: "100%", maxWidth: 460, p: 1, boxShadow: 6 }}>
-        <CardHeader
-          title="Entrar"
-          subheader="Acesso administrativo seguro"
-        />
+        <CardHeader title="Entrar" subheader="Acesso administrativo seguro" />
         <CardContent>
           <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
@@ -82,24 +60,26 @@ export function LoginPage() {
               />
               <TextField
                 label="Senha"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 fullWidth
                 required
                 InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={handleTogglePassword}
-                          edge="end"
-                          aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleTogglePassword}
+                        edge="end"
+                        aria-label={
+                          showPassword ? "Ocultar senha" : "Mostrar senha"
+                        }
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <Button
                 type="submit"

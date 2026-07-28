@@ -7,7 +7,10 @@ export interface UserSession {
 
 export interface AuthResponse {
   token: string;
-  user: UserSession;
+  id: string;
+  name: string;
+  email: string;
+  role: string;
 }
 
 export interface AuthMeResponse {

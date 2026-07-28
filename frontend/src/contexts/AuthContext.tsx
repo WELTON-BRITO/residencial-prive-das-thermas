@@ -1,9 +1,9 @@
 import { createContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { login as loginRequest, fetchProfile } from '../services/authService';
-import type { AuthContextData, AuthResponse, LoginRequest, UserSession } from '../types';
+import type { AuthContextData, LoginRequest, UserSession } from '../types';
 
-const STORAGE_TOKEN = '@prive.token';
-const STORAGE_USER = '@prive.user';
+const STORAGE_TOKEN = 'token';
+const STORAGE_USER = 'user';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -43,9 +43,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async ({ email, password }: LoginRequest) => {
     const auth = await loginRequest({ email, password });
+    const user = {
+      id: auth.id,
+      name: auth.name,
+      email: auth.email,
+      role: auth.role,
+    };
+
     localStorage.setItem(STORAGE_TOKEN, auth.token);
-    localStorage.setItem(STORAGE_USER, JSON.stringify(auth.user));
-    setUser(auth.user);
+    localStorage.setItem(STORAGE_USER, JSON.stringify(user));
+    setUser(user);
   };
 
   const logout = () => {
