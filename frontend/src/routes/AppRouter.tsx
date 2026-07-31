@@ -3,7 +3,7 @@ import { DashboardPage } from '../pages/Dashboard/DashboardPage';
 import { LoginPage } from '../pages/Login/LoginPage';
 import { CreateClientPage } from '../pages/Cadastrar/Cliente';
 import { CreateExpensePage } from '../pages/Cadastrar/Despesas';
-import { AgendamentoPage } from '../pages/Agendamento/AgendamentoPage';
+import AgendamentoPage from '../pages/Agendamento/AgendamentoPage';
 import { Layout } from '../components/layout/Layout';
 import { useAuth } from '../hooks/useAuth';
 import { PrivateRoute } from './PrivateRoute';

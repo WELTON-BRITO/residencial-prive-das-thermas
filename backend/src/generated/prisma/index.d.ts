@@ -3071,8 +3071,19 @@ export namespace Prisma {
     id: string | null
     name: string | null
     taxId: string | null
+    rg: string | null
+    birthDate: Date | null
     phone: string | null
+    mobile: string | null
     email: string | null
+    address: string | null
+    addressNumber: string | null
+    complement: string | null
+    district: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3081,8 +3092,19 @@ export namespace Prisma {
     id: string | null
     name: string | null
     taxId: string | null
+    rg: string | null
+    birthDate: Date | null
     phone: string | null
+    mobile: string | null
     email: string | null
+    address: string | null
+    addressNumber: string | null
+    complement: string | null
+    district: string | null
+    city: string | null
+    state: string | null
+    zipCode: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3091,8 +3113,19 @@ export namespace Prisma {
     id: number
     name: number
     taxId: number
+    rg: number
+    birthDate: number
     phone: number
+    mobile: number
     email: number
+    address: number
+    addressNumber: number
+    complement: number
+    district: number
+    city: number
+    state: number
+    zipCode: number
+    notes: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -3103,8 +3136,19 @@ export namespace Prisma {
     id?: true
     name?: true
     taxId?: true
+    rg?: true
+    birthDate?: true
     phone?: true
+    mobile?: true
     email?: true
+    address?: true
+    addressNumber?: true
+    complement?: true
+    district?: true
+    city?: true
+    state?: true
+    zipCode?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3113,8 +3157,19 @@ export namespace Prisma {
     id?: true
     name?: true
     taxId?: true
+    rg?: true
+    birthDate?: true
     phone?: true
+    mobile?: true
     email?: true
+    address?: true
+    addressNumber?: true
+    complement?: true
+    district?: true
+    city?: true
+    state?: true
+    zipCode?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3123,8 +3178,19 @@ export namespace Prisma {
     id?: true
     name?: true
     taxId?: true
+    rg?: true
+    birthDate?: true
     phone?: true
+    mobile?: true
     email?: true
+    address?: true
+    addressNumber?: true
+    complement?: true
+    district?: true
+    city?: true
+    state?: true
+    zipCode?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3206,8 +3272,19 @@ export namespace Prisma {
     id: string
     name: string
     taxId: string | null
-    phone: string | null
+    rg: string
+    birthDate: Date
+    phone: string
+    mobile: string
     email: string | null
+    address: string
+    addressNumber: string
+    complement: string | null
+    district: string
+    city: string
+    state: string
+    zipCode: string
+    notes: string | null
     createdAt: Date
     updatedAt: Date
     _count: CustomerCountAggregateOutputType | null
@@ -3233,8 +3310,19 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     taxId?: boolean
+    rg?: boolean
+    birthDate?: boolean
     phone?: boolean
+    mobile?: boolean
     email?: boolean
+    address?: boolean
+    addressNumber?: boolean
+    complement?: boolean
+    district?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     bookings?: boolean | Customer$bookingsArgs<ExtArgs>
@@ -3245,8 +3333,19 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     taxId?: boolean
+    rg?: boolean
+    birthDate?: boolean
     phone?: boolean
+    mobile?: boolean
     email?: boolean
+    address?: boolean
+    addressNumber?: boolean
+    complement?: boolean
+    district?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["customer"]>
@@ -3255,8 +3354,19 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     taxId?: boolean
+    rg?: boolean
+    birthDate?: boolean
     phone?: boolean
+    mobile?: boolean
     email?: boolean
+    address?: boolean
+    addressNumber?: boolean
+    complement?: boolean
+    district?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["customer"]>
@@ -3265,13 +3375,24 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     taxId?: boolean
+    rg?: boolean
+    birthDate?: boolean
     phone?: boolean
+    mobile?: boolean
     email?: boolean
+    address?: boolean
+    addressNumber?: boolean
+    complement?: boolean
+    district?: boolean
+    city?: boolean
+    state?: boolean
+    zipCode?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "taxId" | "phone" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
+  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "taxId" | "rg" | "birthDate" | "phone" | "mobile" | "email" | "address" | "addressNumber" | "complement" | "district" | "city" | "state" | "zipCode" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
   export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bookings?: boolean | Customer$bookingsArgs<ExtArgs>
     _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
@@ -3288,8 +3409,19 @@ export namespace Prisma {
       id: string
       name: string
       taxId: string | null
-      phone: string | null
+      rg: string
+      birthDate: Date
+      phone: string
+      mobile: string
       email: string | null
+      address: string
+      addressNumber: string
+      complement: string | null
+      district: string
+      city: string
+      state: string
+      zipCode: string
+      notes: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["customer"]>
@@ -3719,8 +3851,19 @@ export namespace Prisma {
     readonly id: FieldRef<"Customer", 'String'>
     readonly name: FieldRef<"Customer", 'String'>
     readonly taxId: FieldRef<"Customer", 'String'>
+    readonly rg: FieldRef<"Customer", 'String'>
+    readonly birthDate: FieldRef<"Customer", 'DateTime'>
     readonly phone: FieldRef<"Customer", 'String'>
+    readonly mobile: FieldRef<"Customer", 'String'>
     readonly email: FieldRef<"Customer", 'String'>
+    readonly address: FieldRef<"Customer", 'String'>
+    readonly addressNumber: FieldRef<"Customer", 'String'>
+    readonly complement: FieldRef<"Customer", 'String'>
+    readonly district: FieldRef<"Customer", 'String'>
+    readonly city: FieldRef<"Customer", 'String'>
+    readonly state: FieldRef<"Customer", 'String'>
+    readonly zipCode: FieldRef<"Customer", 'String'>
+    readonly notes: FieldRef<"Customer", 'String'>
     readonly createdAt: FieldRef<"Customer", 'DateTime'>
     readonly updatedAt: FieldRef<"Customer", 'DateTime'>
   }
@@ -13295,8 +13438,19 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     taxId: 'taxId',
+    rg: 'rg',
+    birthDate: 'birthDate',
     phone: 'phone',
+    mobile: 'mobile',
     email: 'email',
+    address: 'address',
+    addressNumber: 'addressNumber',
+    complement: 'complement',
+    district: 'district',
+    city: 'city',
+    state: 'state',
+    zipCode: 'zipCode',
+    notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13643,8 +13797,19 @@ export namespace Prisma {
     id?: StringFilter<"Customer"> | string
     name?: StringFilter<"Customer"> | string
     taxId?: StringNullableFilter<"Customer"> | string | null
-    phone?: StringNullableFilter<"Customer"> | string | null
+    rg?: StringFilter<"Customer"> | string
+    birthDate?: DateTimeFilter<"Customer"> | Date | string
+    phone?: StringFilter<"Customer"> | string
+    mobile?: StringFilter<"Customer"> | string
     email?: StringNullableFilter<"Customer"> | string | null
+    address?: StringFilter<"Customer"> | string
+    addressNumber?: StringFilter<"Customer"> | string
+    complement?: StringNullableFilter<"Customer"> | string | null
+    district?: StringFilter<"Customer"> | string
+    city?: StringFilter<"Customer"> | string
+    state?: StringFilter<"Customer"> | string
+    zipCode?: StringFilter<"Customer"> | string
+    notes?: StringNullableFilter<"Customer"> | string | null
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     bookings?: BookingListRelationFilter
@@ -13654,8 +13819,19 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     taxId?: SortOrderInput | SortOrder
-    phone?: SortOrderInput | SortOrder
+    rg?: SortOrder
+    birthDate?: SortOrder
+    phone?: SortOrder
+    mobile?: SortOrder
     email?: SortOrderInput | SortOrder
+    address?: SortOrder
+    addressNumber?: SortOrder
+    complement?: SortOrderInput | SortOrder
+    district?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     bookings?: BookingOrderByRelationAggregateInput
@@ -13668,8 +13844,19 @@ export namespace Prisma {
     OR?: CustomerWhereInput[]
     NOT?: CustomerWhereInput | CustomerWhereInput[]
     name?: StringFilter<"Customer"> | string
-    phone?: StringNullableFilter<"Customer"> | string | null
+    rg?: StringFilter<"Customer"> | string
+    birthDate?: DateTimeFilter<"Customer"> | Date | string
+    phone?: StringFilter<"Customer"> | string
+    mobile?: StringFilter<"Customer"> | string
     email?: StringNullableFilter<"Customer"> | string | null
+    address?: StringFilter<"Customer"> | string
+    addressNumber?: StringFilter<"Customer"> | string
+    complement?: StringNullableFilter<"Customer"> | string | null
+    district?: StringFilter<"Customer"> | string
+    city?: StringFilter<"Customer"> | string
+    state?: StringFilter<"Customer"> | string
+    zipCode?: StringFilter<"Customer"> | string
+    notes?: StringNullableFilter<"Customer"> | string | null
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     bookings?: BookingListRelationFilter
@@ -13679,8 +13866,19 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     taxId?: SortOrderInput | SortOrder
-    phone?: SortOrderInput | SortOrder
+    rg?: SortOrder
+    birthDate?: SortOrder
+    phone?: SortOrder
+    mobile?: SortOrder
     email?: SortOrderInput | SortOrder
+    address?: SortOrder
+    addressNumber?: SortOrder
+    complement?: SortOrderInput | SortOrder
+    district?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CustomerCountOrderByAggregateInput
@@ -13695,8 +13893,19 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Customer"> | string
     name?: StringWithAggregatesFilter<"Customer"> | string
     taxId?: StringNullableWithAggregatesFilter<"Customer"> | string | null
-    phone?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    rg?: StringWithAggregatesFilter<"Customer"> | string
+    birthDate?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
+    phone?: StringWithAggregatesFilter<"Customer"> | string
+    mobile?: StringWithAggregatesFilter<"Customer"> | string
     email?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    address?: StringWithAggregatesFilter<"Customer"> | string
+    addressNumber?: StringWithAggregatesFilter<"Customer"> | string
+    complement?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    district?: StringWithAggregatesFilter<"Customer"> | string
+    city?: StringWithAggregatesFilter<"Customer"> | string
+    state?: StringWithAggregatesFilter<"Customer"> | string
+    zipCode?: StringWithAggregatesFilter<"Customer"> | string
+    notes?: StringNullableWithAggregatesFilter<"Customer"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
   }
@@ -14346,8 +14555,19 @@ export namespace Prisma {
     id?: string
     name: string
     taxId?: string | null
-    phone?: string | null
+    rg: string
+    birthDate: Date | string
+    phone: string
+    mobile: string
     email?: string | null
+    address: string
+    addressNumber: string
+    complement?: string | null
+    district: string
+    city: string
+    state: string
+    zipCode: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     bookings?: BookingCreateNestedManyWithoutCustomerInput
@@ -14357,8 +14577,19 @@ export namespace Prisma {
     id?: string
     name: string
     taxId?: string | null
-    phone?: string | null
+    rg: string
+    birthDate: Date | string
+    phone: string
+    mobile: string
     email?: string | null
+    address: string
+    addressNumber: string
+    complement?: string | null
+    district: string
+    city: string
+    state: string
+    zipCode: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     bookings?: BookingUncheckedCreateNestedManyWithoutCustomerInput
@@ -14368,8 +14599,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     taxId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    rg?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    mobile?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    addressNumber?: StringFieldUpdateOperationsInput | string
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookings?: BookingUpdateManyWithoutCustomerNestedInput
@@ -14379,8 +14621,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     taxId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    rg?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    mobile?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    addressNumber?: StringFieldUpdateOperationsInput | string
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookings?: BookingUncheckedUpdateManyWithoutCustomerNestedInput
@@ -14390,8 +14643,19 @@ export namespace Prisma {
     id?: string
     name: string
     taxId?: string | null
-    phone?: string | null
+    rg: string
+    birthDate: Date | string
+    phone: string
+    mobile: string
     email?: string | null
+    address: string
+    addressNumber: string
+    complement?: string | null
+    district: string
+    city: string
+    state: string
+    zipCode: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14400,8 +14664,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     taxId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    rg?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    mobile?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    addressNumber?: StringFieldUpdateOperationsInput | string
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14410,8 +14685,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     taxId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    rg?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    mobile?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    addressNumber?: StringFieldUpdateOperationsInput | string
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15156,8 +15442,19 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     taxId?: SortOrder
+    rg?: SortOrder
+    birthDate?: SortOrder
     phone?: SortOrder
+    mobile?: SortOrder
     email?: SortOrder
+    address?: SortOrder
+    addressNumber?: SortOrder
+    complement?: SortOrder
+    district?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15166,8 +15463,19 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     taxId?: SortOrder
+    rg?: SortOrder
+    birthDate?: SortOrder
     phone?: SortOrder
+    mobile?: SortOrder
     email?: SortOrder
+    address?: SortOrder
+    addressNumber?: SortOrder
+    complement?: SortOrder
+    district?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15176,8 +15484,19 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     taxId?: SortOrder
+    rg?: SortOrder
+    birthDate?: SortOrder
     phone?: SortOrder
+    mobile?: SortOrder
     email?: SortOrder
+    address?: SortOrder
+    addressNumber?: SortOrder
+    complement?: SortOrder
+    district?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    zipCode?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16740,8 +17059,19 @@ export namespace Prisma {
     id?: string
     name: string
     taxId?: string | null
-    phone?: string | null
+    rg: string
+    birthDate: Date | string
+    phone: string
+    mobile: string
     email?: string | null
+    address: string
+    addressNumber: string
+    complement?: string | null
+    district: string
+    city: string
+    state: string
+    zipCode: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16750,8 +17080,19 @@ export namespace Prisma {
     id?: string
     name: string
     taxId?: string | null
-    phone?: string | null
+    rg: string
+    birthDate: Date | string
+    phone: string
+    mobile: string
     email?: string | null
+    address: string
+    addressNumber: string
+    complement?: string | null
+    district: string
+    city: string
+    state: string
+    zipCode: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16863,8 +17204,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     taxId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    rg?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    mobile?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    addressNumber?: StringFieldUpdateOperationsInput | string
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16873,8 +17225,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     taxId?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    rg?: StringFieldUpdateOperationsInput | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    mobile?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    addressNumber?: StringFieldUpdateOperationsInput | string
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    district?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: StringFieldUpdateOperationsInput | string
+    zipCode?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
