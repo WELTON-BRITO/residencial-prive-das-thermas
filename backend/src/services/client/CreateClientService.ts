@@ -2,19 +2,19 @@ import prismaClient from '../../prisma/index';
 
 export interface CreateClientRequest {
   name: string;
-  cpf: string;
-  rg: string;
-  birthDate: string;
-  phone: string;
-  mobile: string;
+  cpf?: string;
+  rg?: string;
+  birthDate?: string;
+  phone?: string;
+  mobile?: string;
   email?: string;
-  address: string;
-  number: string;
+  address?: string;
+  number?: string;
   complement?: string;
-  district: string;
-  city: string;
-  state: string;
-  zipCode: string;
+  district?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
   notes?: string;
 }
 
@@ -40,21 +40,25 @@ class CreateClientService {
     zipCode,
     notes,
   }: CreateClientRequest) {
-    if (!isValidCpf(cpf)) {
+    const normalizedCpf = cpf?.trim() || undefined;
+    const normalizedEmail = email?.trim() || undefined;
+    const normalizedBirthDate = birthDate?.trim() || undefined;
+
+    if (normalizedCpf && !isValidCpf(normalizedCpf)) {
       throw new Error('CPF inválido. Informe apenas números.');
     }
 
-    const existingClientByCpf = await prismaClient.customer.findUnique({
-      where: { taxId: cpf },
-    });
+    const existingClientByCpf = normalizedCpf
+      ? await prismaClient.customer.findUnique({ where: { taxId: normalizedCpf } })
+      : null;
 
     if (existingClientByCpf) {
       throw new Error('Já existe um cliente cadastrado com este CPF.');
     }
 
-    if (email) {
+    if (normalizedEmail) {
       const existingClientByEmail = await prismaClient.customer.findFirst({
-        where: { email },
+        where: { email: normalizedEmail },
       });
 
       if (existingClientByEmail) {
@@ -62,28 +66,28 @@ class CreateClientService {
       }
     }
 
-    const birthDateValue = new Date(birthDate);
-    if (Number.isNaN(birthDateValue.getTime())) {
-      throw new Error('Data de nascimento inválida.');
+    const birthDateValue = normalizedBirthDate ? new Date(normalizedBirthDate) : undefined;
+    if (birthDateValue && Number.isNaN(birthDateValue.getTime())) {
+      throw new Error('Data de nascimento inválida 3.');
     }
 
     const client = await prismaClient.customer.create({
       data: {
         name,
-        taxId: cpf,
-        rg,
+        taxId: normalizedCpf,
+        rg: rg?.trim() || undefined,
         birthDate: birthDateValue,
-        phone,
-        mobile,
-        email,
-        address,
-        addressNumber: number,
-        complement,
-        district,
-        city,
-        state,
-        zipCode,
-        notes,
+        phone: phone?.trim() || undefined,
+        mobile: mobile?.trim() || undefined,
+        email: normalizedEmail,
+        address: address?.trim() || undefined,
+        addressNumber: number?.trim() || undefined,
+        complement: complement?.trim() || undefined,
+        district: district?.trim() || undefined,
+        city: city?.trim() || undefined,
+        state: state?.trim() || undefined,
+        zipCode: zipCode?.trim() || undefined,
+        notes: notes?.trim() || undefined,
       },
     });
 

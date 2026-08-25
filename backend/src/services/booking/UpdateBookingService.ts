@@ -1,5 +1,6 @@
 import prismaClient from '../../prisma/index';
 import dayjs from 'dayjs';
+import { ResolveBookingCustomerService } from '../client/ResolveBookingCustomerService';
 
 export interface UpdateBookingRequest {
   id: string;
@@ -41,19 +42,11 @@ class UpdateBookingService {
 
     if (conflicting) throw new Error('Apartamento já reservado neste período.');
 
-    let customerIdToUse = customerId ?? existing.customerId;
-    const name = customerName?.trim();
-    if (name) {
-      const existingCustomer = await prismaClient.customer.findFirst({
-        where: { name },
-      });
-
-      const customer = existingCustomer ?? await prismaClient.customer.create({
-        data: { name },
-      });
-
-      customerIdToUse = customer.id;
-    }
+    const customerIdToUse = customerId
+      ? await new ResolveBookingCustomerService().execute(customerId)
+      : customerName?.trim()
+        ? await new ResolveBookingCustomerService().execute(undefined, customerName)
+        : existing.customerId;
 
     const nights = dayjs(checkOutDate).diff(dayjs(checkInDate), 'day');
     const total = rentalAmount ?? (dailyRate ? Number((dailyRate * nights).toFixed(2)) : Number(existing.rentalAmount ?? 0));
@@ -69,8 +62,16 @@ class UpdateBookingService {
     const updated = await prismaClient.booking.update({
       where: { id },
       data: {
-        customerId: customerIdToUse,
-        apartmentId: apartmentIdToUse,
+        customer: {
+          connect: { id: customerIdToUse },
+        },
+        ...(apartmentIdToUse
+          ? {
+              apartment: {
+                connect: { id: apartmentIdToUse },
+              },
+            }
+          : {}),
         checkIn: checkInDate,
         checkOut: checkOutDate,
         totalNights: nights,

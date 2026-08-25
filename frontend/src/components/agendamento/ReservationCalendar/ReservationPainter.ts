@@ -21,11 +21,17 @@ export function isHoliday(day: dayjs.Dayjs): boolean {
   return holidayDates.includes(day.format('YYYY-MM-DD'));
 }
 
+function parseReservationDay(value: string): dayjs.Dayjs {
+  // Datas do PostgreSQL podem chegar como ISO/UTC. Usar apenas a data evita
+  // que 2026-08-24T00:00:00.000Z seja exibido como 23/08 no fuso local.
+  return dayjs(value.slice(0, 10)).startOf('day');
+}
+
 export function isReserved(day: dayjs.Dayjs, reservations: Reservation[]): boolean {
   return reservations.some((reservation) => {
-    const checkIn = dayjs(reservation.checkIn).startOf('day');
-    const checkOut = dayjs(reservation.checkOut).startOf('day');
-    return day.isSame(checkIn) || day.isSame(checkOut) || (day.isAfter(checkIn) && day.isBefore(checkOut));
+    const checkIn = parseReservationDay(reservation.checkIn);
+    const checkOut = parseReservationDay(reservation.checkOut);
+    return !day.isBefore(checkIn, 'day') && !day.isAfter(checkOut, 'day');
   });
 }
 

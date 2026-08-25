@@ -15,22 +15,40 @@ import {
 import { createClient } from '../../services/clientService';
 import type { CreateClientFormData } from '../../types/client';
 
-const createClientSchema = z.object({
-  name: z.string().min(1, 'O nome é obrigatório.'),
-  cpf: z.string().regex(/^\d{11}$/, 'CPF inválido. Informe apenas números.'),
-  rg: z.string().min(1, 'O RG é obrigatório.'),
-  birthDate: z.string().min(1, 'A data de nascimento é obrigatória.'),
-  phone: z.string().min(1, 'O telefone é obrigatório.'),
-  mobile: z.string().min(1, 'O celular é obrigatório.'),
-  email: z.string().email('Precisa ser um e-mail válido.'),
-  address: z.string().min(1, 'O endereço é obrigatório.'),
-  number: z.string().min(1, 'O número é obrigatório.'),
-  complement: z.string().optional(),
-  district: z.string().min(1, 'O bairro é obrigatório.'),
-  city: z.string().min(1, 'A cidade é obrigatória.'),
-  state: z.string().min(1, 'O estado é obrigatório.'),
-  zipCode: z.string().min(1, 'O CEP é obrigatório.'),
-  notes: z.string().optional(),
+export const createClientSchema = z.object({
+  // Campo OBRIGATÓRIO
+  name: z.string().trim().min(1, 'O nome é obrigatório.'),
+
+  // Campos OPCIONAIS (Aceitam string vazia, null ou undefined)
+  cpf: z
+    .string()
+    .optional()
+    .or(z.literal(''))
+    .refine((val) => !val || /^\d{11}$/.test(val), {
+      message: 'CPF inválido. Informe apenas os 11 números.',
+    }),
+
+  rg: z.string().optional().or(z.literal('')),
+  birthDate: z.string().optional().or(z.literal('')),
+  phone: z.string().optional().or(z.literal('')),
+  mobile: z.string().optional().or(z.literal('')),
+
+  email: z
+    .string()
+    .optional()
+    .or(z.literal(''))
+    .refine((val) => !val || z.string().email().safeParse(val).success, {
+      message: 'Precisa ser um e-mail válido.',
+    }),
+
+  address: z.string().optional().or(z.literal('')),
+  number: z.string().optional().or(z.literal('')),
+  complement: z.string().optional().or(z.literal('')),
+  district: z.string().optional().or(z.literal('')),
+  city: z.string().optional().or(z.literal('')),
+  state: z.string().optional().or(z.literal('')),
+  zipCode: z.string().optional().or(z.literal('')),
+  notes: z.string().optional().or(z.literal('')),
 });
 
 type CreateClientSchema = z.infer<typeof createClientSchema>;
@@ -42,6 +60,7 @@ export function CreateClientPage() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<CreateClientSchema>({
     resolver: zodResolver(createClientSchema),
@@ -51,6 +70,7 @@ export function CreateClientPage() {
     setErrorMessage('');
     try {
       await createClient(data as CreateClientFormData);
+      reset();
       setSuccessMessage('Cliente cadastrado com sucesso');
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -77,7 +97,18 @@ export function CreateClientPage() {
       <Card>
         <CardHeader title="Cadastrar Cliente" />
         <CardContent>
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            onChangeCapture={(event) => {
+              const target = event.target;
+              if (target instanceof HTMLInputElement && target.type === 'date') return;
+              if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+                target.value = target.value.toUpperCase();
+              }
+            }}
+            noValidate
+          >
             <Box sx={formGridSx}>
               <Box sx={{ gridColumn: { xs: 'span 3', md: 'span 2' } }}>
                 <TextField
@@ -111,7 +142,7 @@ export function CreateClientPage() {
                   label="Data de nascimento"
                   type="date"
                   fullWidth
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   {...register('birthDate')}
                   error={Boolean(errors.birthDate)}
                   helperText={errors.birthDate?.message}

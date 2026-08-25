@@ -28,14 +28,14 @@ function monthMatrix(year: number, month: number) {
 export function Calendar({ baseDate = new Date(), reservations, selectedDate, onSelectDate }: CalendarProps) {
   const start = dayjs(baseDate).startOf('month');
 
-  const months = useMemo(() => [0, 1, 2].map((i) => start.add(i, 'month')), [start]);
+  const months = useMemo(() => [0, 1, 2, 3].map((i) => start.add(i, 'month')), [start]);
 
   const reservedMap = useMemo(() => {
     const map = new Map<string, boolean>();
     reservations.forEach((r) => {
-      const s = dayjs(r.checkIn);
-      const e = dayjs(r.checkOut);
-      for (let d = s; d.isBefore(e); d = d.add(1, 'day')) {
+      const s = dayjs(r.checkIn.slice(0, 10));
+      const e = dayjs(r.checkOut.slice(0, 10));
+      for (let d = s; !d.isAfter(e, 'day'); d = d.add(1, 'day')) {
         map.set(d.format('YYYY-MM-DD'), true);
       }
     });

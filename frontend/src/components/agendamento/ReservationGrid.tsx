@@ -1,4 +1,5 @@
 import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import dayjs from 'dayjs';
 import type { Reservation } from '../../types/reservation';
 
 interface Props {
@@ -30,6 +31,12 @@ function formatCurrency(value: number | string) {
 }
 
 export function ReservationGrid({ reservations, onEdit, onDelete }: Props) {
+  const today = dayjs().startOf('day');
+  const upcomingReservations = reservations.filter((reservation) => {
+    const checkIn = dayjs(reservation.checkIn.slice(0, 10)).startOf('day');
+    return checkIn.isValid() && !checkIn.isBefore(today, 'day');
+  });
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -50,7 +57,7 @@ export function ReservationGrid({ reservations, onEdit, onDelete }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {reservations.map((r) => (
+          {upcomingReservations.map((r) => (
             <TableRow key={r.id}>
               <TableCell>{r.customer?.name ?? ''}</TableCell>
               <TableCell>{formatDate(r.checkIn)}</TableCell>

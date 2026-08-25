@@ -16,7 +16,7 @@ export function ReservationCalendar({ reservations, checkIn, checkOut }: Props) 
   const [initialYear, setInitialYear] = useState(() => dayjs().year());
 
   const months = useMemo(() => {
-    return [0, 1, 2].map((offset) => {
+    return [0, 1, 2, 3].map((offset) => {
       const date = dayjs(new Date(initialYear, initialMonth, 1)).add(offset, 'month');
       return { month: date.month(), year: date.year() };
     });
@@ -41,7 +41,7 @@ export function ReservationCalendar({ reservations, checkIn, checkOut }: Props) 
         <Button variant="outlined" onClick={handleNext}>&gt;</Button>
       </Box>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(4, 1fr)' }, gap: 2 }}>
         {months.map(({ month, year }) => (
           <MonthView key={`${year}-${month}`} month={month} year={year} reservations={reservations} checkIn={checkIn} checkOut={checkOut} />
         ))}

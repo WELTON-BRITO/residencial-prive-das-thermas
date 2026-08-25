@@ -3,6 +3,7 @@ import { CreateUserController } from './controllers/user/CreateUserController';
 import { validateSchema } from './middlewares/validadeSchema';
 import { createUserSchema, authUserSchema } from './schemas/userSchema';
 import { CreateClientController } from './controllers/client/CreateClientController';
+import { FindClientsController } from './controllers/client/FindClientsController';
 import { createClientSchema } from './schemas/clientSchema';
 import { CreateExpenseController } from './controllers/expense/CreateExpenseController';
 import { createExpenseSchema } from './schemas/expenseSchema';
@@ -34,6 +35,12 @@ router.post(
     isAuthenticated,
     validateSchema(createClientSchema),
     new CreateClientController().handle
+);
+
+router.get(
+    '/clientes',
+    isAuthenticated,
+    new FindClientsController().handle
 );
 
 router.post(

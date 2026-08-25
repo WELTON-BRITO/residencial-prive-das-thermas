@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  //output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -55,18 +55,18 @@ model Customer {
   id            String    @id @default(uuid())
   name          String    @db.VarChar(150)
   taxId         String?   @unique @map("tax_id") @db.VarChar(20)
-  rg            String    @db.VarChar(20)
-  birthDate     DateTime  @map("birth_date")
-  phone         String    @db.VarChar(20)
-  mobile        String    @db.VarChar(20)
+  rg            String?   @db.VarChar(20)
+  birthDate     DateTime? @map("birth_date")
+  phone         String?   @db.VarChar(20)
+  mobile        String?   @db.VarChar(20)
   email         String?   @db.VarChar(150)
-  address       String    @db.VarChar(255)
-  addressNumber String    @map("address_number") @db.VarChar(20)
+  address       String?   @db.VarChar(255)
+  addressNumber String?   @map("address_number") @db.VarChar(20)
   complement    String?   @db.VarChar(100)
-  district      String    @db.VarChar(100)
-  city          String    @db.VarChar(100)
-  state         String    @db.VarChar(100)
-  zipCode       String    @map("zip_code") @db.VarChar(20)
+  district      String?   @db.VarChar(100)
+  city          String?   @db.VarChar(100)
+  state         String?   @db.VarChar(100)
+  zipCode       String?   @map("zip_code") @db.VarChar(20)
   notes         String?   @db.Text
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
@@ -103,7 +103,7 @@ model Booking {
   id           String        @id @default(uuid())
   bookingDate  DateTime      @default(now()) @map("booking_date")
   customerId   String        @map("customer_id")
-  apartmentId  String        @map("apartment_id")
+  apartmentId  String?       @map("apartment_id")
   checkIn      DateTime      @map("check_in") @db.Date
   checkOut     DateTime      @map("check_out") @db.Date
   totalNights  Int           @map("total_nights")
@@ -117,7 +117,7 @@ model Booking {
   updatedAt    DateTime      @updatedAt @map("updated_at")
 
   customer  Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  apartment Apartment @relation(fields: [apartmentId], references: [id], onDelete: Restrict)
+  apartment Apartment? @relation(fields: [apartmentId], references: [id], onDelete: Restrict)
   payments  Payment[]
   incomes   Income[]
 

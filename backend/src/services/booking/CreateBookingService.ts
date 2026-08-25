@@ -1,8 +1,10 @@
 import prismaClient from '../../prisma/index';
 import dayjs from 'dayjs';
+import { ResolveBookingCustomerService } from '../client/ResolveBookingCustomerService';
 
 export interface CreateBookingRequest {
-    customerId: string;
+    customerId?: string;
+    customerName?: string;
     apartmentId?: string;
     checkIn: string;
     checkOut: string;
@@ -15,6 +17,7 @@ export interface CreateBookingRequest {
 class CreateBookingService {
     async execute({
         customerId,
+        customerName,
         apartmentId,
         checkIn,
         checkOut,
@@ -36,34 +39,21 @@ class CreateBookingService {
         }
 
         // ==========================
-        // Valida Cliente
+        // Resolve e Valida Cliente (Mova para cá)
         // ==========================
 
-        const customer = await prismaClient.customer.findUnique({
-            where: {
-                id: customerId,
-            },
-        });
+        // Resolve o ID do cliente existente ou cria/busca pelo nome
+        const customerIdToUse = await new ResolveBookingCustomerService().execute(
+            customerId,
+            customerName,
+        );
 
-        if (!customer) {
-            throw new Error('Cliente não encontrado.');
+        // Garante que o ID realmente foi retornado e não é nulo/undefined
+        if (!customerIdToUse) {
+            throw new Error('Não foi possível identificar ou cadastrar o cliente informado.');
         }
 
-        // ==========================
-        // Valida Apartamento
-        // ==========================
-
-        let apartmentIdToUse = apartmentId;
-
-        if (!apartmentIdToUse) {
-            const apartment = await prismaClient.apartment.findFirst();
-
-            if (!apartment) {
-                throw new Error('Nenhum apartamento cadastrado.');
-            }
-
-            apartmentIdToUse = apartment.id;
-        }
+        const apartmentIdToUse = apartmentId;
 
         // ==========================
         // Verifica conflito
@@ -73,16 +63,8 @@ class CreateBookingService {
             where: {
                 apartmentId: apartmentIdToUse,
                 AND: [
-                    {
-                        checkIn: {
-                            lt: checkOutDate,
-                        },
-                    },
-                    {
-                        checkOut: {
-                            gt: checkInDate,
-                        },
-                    },
+                    { checkIn: { lt: checkOutDate } },
+                    { checkOut: { gt: checkInDate } },
                 ],
             },
         });
@@ -100,11 +82,9 @@ class CreateBookingService {
         let totalRental = rentalAmount;
         let daily = dailyRate;
 
-        if (!totalRental && !daily) {
+        if (!totalRental && !daily && apartmentIdToUse) {
             const apartment = await prismaClient.apartment.findUnique({
-                where: {
-                    id: apartmentIdToUse,
-                },
+                where: { id: apartmentIdToUse },
             });
 
             daily = Number(apartment?.defaultDailyRate ?? 0);
@@ -114,10 +94,7 @@ class CreateBookingService {
             totalRental = Number(((daily ?? 0) * totalNights).toFixed(2));
         }
 
-        daily =
-            totalNights > 0
-                ? Number((totalRental / totalNights).toFixed(2))
-                : 0;
+        daily = totalNights > 0 ? Number((totalRental / totalNights).toFixed(2)) : 0;
 
         // ==========================
         // Pagamentos
@@ -127,10 +104,7 @@ class CreateBookingService {
             .slice(0, 4)
             .map((value) => Number(value) || 0);
 
-        const paidAmount = paymentValues.reduce(
-            (sum, value) => sum + value,
-            0,
-        );
+        const paidAmount = paymentValues.reduce((sum, value) => sum + value, 0);
 
         const dueAmount = Number(
             Math.max(totalRental - paidAmount, 0).toFixed(2),
@@ -144,24 +118,25 @@ class CreateBookingService {
             data: {
                 bookingDate: new Date(),
 
-                customerId,
+                customer: {
+                    connect: { id: customerIdToUse },
+                },
 
-                apartmentId: apartmentIdToUse,
+                ...(apartmentIdToUse
+                    ? {
+                        apartment: {
+                            connect: { id: apartmentIdToUse },
+                        },
+                    }
+                    : {}),
 
                 checkIn: checkInDate,
-
                 checkOut: checkOutDate,
-
                 totalNights,
-
                 dailyRate: daily,
-
                 rentalAmount: totalRental,
-
                 paidAmount,
-
                 dueAmount,
-
                 notes,
 
                 payments: {

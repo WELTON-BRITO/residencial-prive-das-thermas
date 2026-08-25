@@ -102,7 +102,7 @@ export function CreateExpensePage() {
                   label="Data de vencimento"
                   type="date"
                   fullWidth
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   {...register('dueDate')}
                   error={Boolean(errors.dueDate)}
                   helperText={errors.dueDate?.message}
@@ -113,7 +113,7 @@ export function CreateExpensePage() {
                   label="Data de pagamento"
                   type="date"
                   fullWidth
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   {...register('paymentDate')}
                   error={Boolean(errors.paymentDate)}
                   helperText={errors.paymentDate?.message}

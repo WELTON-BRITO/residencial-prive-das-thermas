@@ -2,23 +2,46 @@ import { z } from 'zod';
 
 export const createClientSchema = z.object({
   body: z.object({
-    name: z.string({ message: 'O nome é obrigatório.' }).min(1),
-    cpf: z.string({ message: 'O CPF é obrigatório.' }).regex(/^\d{11}$/, 'CPF inválido. Informe apenas números.'),
-    rg: z.string({ message: 'O RG é obrigatório.' }).min(1),
-    birthDate: z.string({ message: 'A data de nascimento é obrigatória.' }).refine(
-      (value) => !Number.isNaN(Date.parse(value)),
-      { message: 'Data de nascimento inválida.' }
-    ),
-    phone: z.string({ message: 'O telefone é obrigatório.' }).min(1),
-    mobile: z.string({ message: 'O celular é obrigatório.' }).min(1),
-    email: z.string().email('Precisa ser um e-mail válido.').optional(),
-    address: z.string({ message: 'O endereço é obrigatório.' }).min(1),
-    number: z.string({ message: 'O número é obrigatório.' }).min(1),
-    complement: z.string().optional(),
-    district: z.string({ message: 'O bairro é obrigatório.' }).min(1),
-    city: z.string({ message: 'A cidade é obrigatória.' }).min(1),
-    state: z.string({ message: 'O estado é obrigatório.' }).min(1),
-    zipCode: z.string({ message: 'O CEP é obrigatório.' }).min(1),
-    notes: z.string().optional(),
+    // Campo OBRIGATÓRIO
+    name: z.string({ message: 'O nome é obrigatório.' }).trim().min(1, 'O nome é obrigatório.'),
+
+    // Campos OPCIONAIS (Aceitam string vazia, null ou undefined)
+    cpf: z
+      .string()
+      .optional()
+      .or(z.literal(''))
+      .refine((val) => !val || /^\d{11}$/.test(val), {
+        message: 'CPF inválido. Informe apenas os 11 números.',
+      }),
+
+    rg: z.string().optional().or(z.literal('')),
+
+    birthDate: z
+      .string()
+      .optional()
+      .or(z.literal(''))
+      .refine((val) => !val || !Number.isNaN(Date.parse(val)), {
+        message: 'Data de nascimento inválida.',
+      }),
+
+    phone: z.string().optional().or(z.literal('')),
+    mobile: z.string().optional().or(z.literal('')),
+
+    email: z
+      .string()
+      .optional()
+      .or(z.literal(''))
+      .refine((val) => !val || z.string().email().safeParse(val).success, {
+        message: 'Precisa ser um e-mail válido.',
+      }),
+
+    address: z.string().optional().or(z.literal('')),
+    number: z.string().optional().or(z.literal('')),
+    complement: z.string().optional().or(z.literal('')),
+    district: z.string().optional().or(z.literal('')),
+    city: z.string().optional().or(z.literal('')),
+    state: z.string().optional().or(z.literal('')),
+    zipCode: z.string().optional().or(z.literal('')),
+    notes: z.string().optional().or(z.literal('')),
   }),
 });

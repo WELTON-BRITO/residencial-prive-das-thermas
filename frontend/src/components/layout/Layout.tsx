@@ -29,7 +29,8 @@ export function Layout({
   const menuItems = useMemo(
     () => [
       { label: "Dashboard", icon: <Dashboard />, path: "/dashboard" },     
-      { label: "Agendamento", icon: <Event />, path: "/agendamento"},    
+      { label: "Agendamento", icon: <Event />, path: "/agendamento"},  
+      { label: "Financeiro", icon: <AttachMoney />, path: "/financeiro" },    
     ],
     [],
   );
